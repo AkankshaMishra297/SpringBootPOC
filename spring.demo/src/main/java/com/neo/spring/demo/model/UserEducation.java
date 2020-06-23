@@ -12,10 +12,10 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
@@ -26,11 +26,11 @@ public class UserEducation {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	private float sscPercentage;
+	private Float sscPercentage;
 
-	private float hscPercentage;
+	private Float hscPercentage;
 	
-	private float cgpa;
+	private Float cgpa;
 
 	private String sscBoardName;
 
@@ -42,6 +42,7 @@ public class UserEducation {
 			)
 	private User user;
 
+	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar createdAt;
 
@@ -54,27 +55,27 @@ public class UserEducation {
 		this.id = id;
 	}
 
-	public float getSscPercentage() {
+	public Float getSscPercentage() {
 		return sscPercentage;
 	}
 
-	public void setSscPercentage(float sscPercentage) {
+	public void setSscPercentage(Float sscPercentage) {
 		this.sscPercentage = sscPercentage;
 	}
 
-	public float getHscPercentage() {
+	public Float getHscPercentage() {
 		return hscPercentage;
 	}
 
-	public void setHscPercentage(float hscPercentage) {
+	public void setHscPercentage(Float hscPercentage) {
 		this.hscPercentage = hscPercentage;
 	}
 
-	public float getCgpa() {
+	public Float getCgpa() {
 		return cgpa;
 	}
 
-	public void setCgpa(float cgpa) {
+	public void setCgpa(Float cgpa) {
 		this.cgpa = cgpa;
 	}
 

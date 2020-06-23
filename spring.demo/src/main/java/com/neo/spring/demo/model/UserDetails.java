@@ -3,7 +3,6 @@ package com.neo.spring.demo.model;
 import java.util.Calendar;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -13,10 +12,10 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
@@ -42,6 +41,7 @@ public class UserDetails {
 	private User user;
 
 	@Temporal(TemporalType.TIMESTAMP)
+	@CreationTimestamp
 	private Calendar createdAt;
 	
 	public int getId() {

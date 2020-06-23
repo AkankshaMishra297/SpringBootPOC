@@ -1,14 +1,12 @@
 package com.neo.spring.demo.service;
 
-import com.neo.spring.demo.model.User;
-
 public interface UserService {
 
 	public String addUser(String dashboardRequest) throws Exception;
 
 	public String getAllActiveUsers() throws Exception;
 
-	public User editUser(User user);
+	public String editUser(String user, int id) throws Exception;
 
 	public String deleteUser(int id) throws Exception;
 

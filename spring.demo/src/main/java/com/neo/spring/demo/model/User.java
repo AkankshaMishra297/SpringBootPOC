@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Calendar;
 import java.util.HashSet;
@@ -29,16 +30,17 @@ public class User {
 
 	private boolean active;
 
+	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar createdAt;
 
-	@OneToOne(mappedBy="user")
+	@OneToOne(mappedBy="user", cascade = CascadeType.ALL)
 	private UserDetails userDetails;
 
-	@OneToOne(mappedBy="user")
+	@OneToOne(mappedBy="user", cascade = CascadeType.ALL)
 	private UserEducation userEducation;
 
-	@OneToMany(mappedBy="user")
+	@OneToMany(mappedBy="user", cascade = CascadeType.ALL)
 	private List<UserEmployment> userEmployment;
 	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY
