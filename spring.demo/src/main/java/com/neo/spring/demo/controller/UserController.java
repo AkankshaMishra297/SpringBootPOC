@@ -1,5 +1,7 @@
 package com.neo.spring.demo.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -10,9 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.neo.spring.demo.service.UserService;
 
 @RestController
@@ -22,17 +21,38 @@ public class UserController extends UserAbstractClass {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@RequestMapping(value = "/addUser", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> addUser(@RequestBody String dashboardRequest) throws Exception {
-		LOGGER.trace("Starting getUserByFirstNameAndLastName() from UserController with arguments:: dashboardRequest: "+dashboardRequest);
+		LOGGER.trace("Starting addUser() from UserController with arguments:: dashboardRequest: "+dashboardRequest);
 		ResponseEntity<?> responseEntity = null;
-		String jsonString = userService.addUser(dashboardRequest);
-		if(jsonString != null){
-			responseEntity = ResponseEntity.ok(jsonString);
-		} else
-			responseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		if(validate(dashboardRequest).equals("pass")) {
+			String jsonString = userService.addUser(dashboardRequest);
+			if(jsonString != null){
+				responseEntity = ResponseEntity.ok(jsonString);
+			} else
+				responseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} else {
+			responseEntity = ResponseEntity.ok(validate(dashboardRequest));
+		}
 		LOGGER.trace("Exiting addUser() from UserController with return:: responseEntity: "+responseEntity);
+		return responseEntity;
+	}
+	
+	@RequestMapping(value = "/editUser/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> editUser(@RequestBody String dashboardRequest, @PathVariable("id") int id) throws Exception {
+		LOGGER.trace("Starting editUser() from UserController");
+		ResponseEntity<?> responseEntity = null;
+				if(validate(dashboardRequest).equals("pass")) {
+			String jsonString = userService.editUser(dashboardRequest, id);
+			if(jsonString != null){
+				responseEntity = ResponseEntity.ok(jsonString);
+			} else
+				responseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} else {
+			responseEntity = ResponseEntity.ok(validate(dashboardRequest));
+		}
+		LOGGER.trace("Exiting editUser() from UserController");
 		return responseEntity;
 	}
 
@@ -46,6 +66,19 @@ public class UserController extends UserAbstractClass {
 		} else
 			responseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		LOGGER.trace("Exiting getUsers() from UserController");
+		return responseEntity;
+	}
+	
+	@RequestMapping(value = "/getAllUsers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getAllUsers() throws Exception {
+		LOGGER.trace("Starting getAllUsers() from UserController");
+		ResponseEntity<?> responseEntity = null;
+		String jsonString = userService.getAllUsers();
+		if(jsonString != null){
+			responseEntity = ResponseEntity.ok(jsonString);
+		} else
+			responseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		LOGGER.trace("Exiting getAllUsers() from UserController");
 		return responseEntity;
 	}
 
@@ -75,19 +108,6 @@ public class UserController extends UserAbstractClass {
 		return responseEntity;
 	}
 
-	@RequestMapping(value = "/getAllUsers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> getAllUsers() throws Exception {
-		LOGGER.trace("Starting getAllUsers() from UserController");
-		ResponseEntity<?> responseEntity = null;
-		String jsonString = userService.getAllUsers();
-		if(jsonString != null){
-			responseEntity = ResponseEntity.ok(jsonString);
-		} else
-			responseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		LOGGER.trace("Exiting getAllUsers() from UserController");
-		return responseEntity;
-	}
-
 	@RequestMapping(value = "/searchByEmail/{email}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> searchByEmail(@PathVariable("email") String email) throws Exception {
 		LOGGER.trace("Starting searchByEmail() from UserController");
@@ -101,17 +121,16 @@ public class UserController extends UserAbstractClass {
 		return responseEntity;
 	}
 	
-	@RequestMapping(value = "/editUser/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> editUser(@RequestBody String user, @PathVariable("id") int id) throws Exception {
-		LOGGER.trace("Starting editUser() from UserController");
+	@RequestMapping(value = "/sortBy/{anything}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> sortByAnything(@PathVariable("anything") String anything) throws Exception {
+		LOGGER.trace("Starting sortByAnything() from UserController");
 		ResponseEntity<?> responseEntity = null;
-		String jsonString = userService.editUser(user, id);
+		String jsonString = userService.sortBy(anything);
 		if(jsonString != null){
 			responseEntity = ResponseEntity.ok(jsonString);
 		} else
 			responseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		LOGGER.trace("Exiting editUser() from UserController");
+		LOGGER.trace("Exiting sortByAnything() from UserController");
 		return responseEntity;
 	}
-	
 }

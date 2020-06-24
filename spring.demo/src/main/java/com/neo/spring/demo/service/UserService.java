@@ -16,4 +16,6 @@ public interface UserService {
 
 	public String searchByEmail(String email) throws Exception;
 
+	public String sortBy(String anything) throws Exception;
+
 }

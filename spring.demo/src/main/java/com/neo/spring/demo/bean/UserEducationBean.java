@@ -1,5 +1,7 @@
 package com.neo.spring.demo.bean;
 
+import javax.validation.constraints.Pattern;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -7,21 +9,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class UserEducationBean {
 	
 	@JsonProperty("sscPercentage")
+	@Pattern(regexp ="[0-9.]*$", message = "invalid sscPercentage")
 	private String sscPercentage;
 
 	@JsonProperty("hscPercentage")
+	@Pattern(regexp ="[0-9.]*$", message = "invalid hscPercentage")
 	private String hscPercentage;
 	
 	@JsonProperty("cgpa")
+	@Pattern(regexp ="[0-9.]*$", message = "invalid cgpa")
 	private String cgpa;
 
 	@JsonProperty("sscBoardName")
+	@Pattern(regexp ="([a-zA-Z]){2,16}", message = "invalid sscBoardName")
 	private String sscBoardName;
 
 	@JsonProperty("hscBoardName")
+	@Pattern(regexp ="([a-zA-Z]){2,16}", message = "invalid hscBoardName")
 	private String hscBoardName;
 
 	@JsonProperty("universityName")
+	@Pattern(regexp ="([a-zA-Z]){2,16}", message = "invalid universityName")
 	private String universityName;
 
 	public String getSscPercentage() {

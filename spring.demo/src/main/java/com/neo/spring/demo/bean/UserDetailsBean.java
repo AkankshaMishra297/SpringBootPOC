@@ -1,5 +1,7 @@
 package com.neo.spring.demo.bean;
 
+import javax.validation.constraints.Pattern;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -7,12 +9,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class UserDetailsBean {
 	
 	@JsonProperty("firstName")
+	@Pattern(regexp ="([a-zA-Z]){2,16}", message = "invalid firstName")
 	private String firstName;
 	
 	@JsonProperty("lastName")
+	@Pattern(regexp ="([a-zA-Z]){2,16}", message = "invalid lastName")
 	private String LastName;
 	
 	@JsonProperty("email")
+	@Pattern(regexp ="^([A-Za-z0-9])(([.])?[0-9a-z])*[@]([a-z])+([.]([a-z])+){1,3}", message = "invalid email")
 	private String email;
 	
 	@JsonProperty("gender")
