@@ -1,15 +1,22 @@
 package com.neo.spring.demo.serviceImpl;
 
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.neo.spring.demo.bean.DashboardResponse;
 import com.neo.spring.demo.bean.UserBean;
@@ -30,6 +37,10 @@ public class UserServiceImpl implements UserService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 	private static final ObjectMapper MAPPER = new ObjectMapper();
 	private static final String USER_DETAILS = "user_info";
+	private static final Integer DEFAULT_PAGE_SIZE = 2;
+	private static final Integer DEFAULT_PAGE_NUMBER = 1;
+
+	public final DateTimeFormatter yyyy_mm_dd = DateTimeFormatter.ofPattern("yyyy-mm-dd");
 
 	@Autowired
 	private UserRepository userRepo;
@@ -79,8 +90,16 @@ public class UserServiceImpl implements UserService {
 					userEmp.setUser(user);
 					userEmp.setCompanyLocation(empBean.getCompanyLocation() != null ? empBean.getCompanyLocation() : null);
 					userEmp.setCompanyName(empBean.getCompanyName() != null ? empBean.getCompanyName() : null);
-					userEmp.setEndDate(empBean.getEndDate() != null ? empBean.getEndDate() : null);
-					userEmp.setStartDate(empBean.getStartDate() != null ? empBean.getStartDate() : null);
+					
+					if(empBean.getEndDate() != null) {
+						Date d = new SimpleDateFormat("yyyy-dd-mm").parse(empBean.getEndDate());
+						userEmp.setEndDate(d);
+					} 
+					if(empBean.getStartDate() != null) {
+						Date d = new SimpleDateFormat("yyyy-dd-mm").parse(empBean.getStartDate());
+						userEmp.setStartDate(d);
+					} 
+					
 					userEmp.setTechnology(empBean.getTechnology() != null ? empBean.getTechnology() : null);
 					empList.add(userEmp);
 				}
@@ -157,7 +176,7 @@ public class UserServiceImpl implements UserService {
 					}
 					List<UserEmployment> userEmployment = user.getUserEmployment();
 					List<UserEmploymentBean> userEmploymentList = new ArrayList<>();
-					
+
 					if(userEmployment != null ) {
 						for(UserEmployment uEmp : userEmployment) {
 							UserEmploymentBean userEmploymentBean = new UserEmploymentBean();
@@ -166,9 +185,9 @@ public class UserServiceImpl implements UserService {
 							if(uEmp.getCompanyName() != null)
 								userEmploymentBean.setCompanyName(uEmp.getCompanyName());
 							if(uEmp.getEndDate() != null)
-								userEmploymentBean.setEndDate(uEmp.getEndDate());
+								userEmploymentBean.setEndDate(uEmp.getEndDate().toString());
 							if(uEmp.getStartDate() != null)
-								userEmploymentBean.setStartDate(uEmp.getStartDate());
+								userEmploymentBean.setStartDate(uEmp.getStartDate().toString());
 							if(uEmp.getTechnology() != null)
 								userEmploymentBean.setTechnology(uEmp.getTechnology());
 							userEmploymentList.add(userEmploymentBean);
@@ -259,13 +278,19 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public String getAllUsers() throws Exception {
+	public String getAllUsers(String dashboardRequest) throws Exception {
 		LOGGER.trace("Starting getAllUsers() from UserServiceImpl");
 		String returnValue = null;
 		String errorMsg = null;
 		DashboardResponse dashboardResponse = new DashboardResponse();
 		try {
-			List<User> userDetailsList = this.userRepo.findAll();
+			JsonNode request = MAPPER.readTree(dashboardRequest);
+			Integer pageNumber=request.get("page_number") != null ? request.get("page_number").asInt() : DEFAULT_PAGE_NUMBER;
+			Integer pageSize=request.get("page_size") != null ? request.get("page_size").asInt() : DEFAULT_PAGE_SIZE;
+
+			Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
+			Page<User> userDetailsList = this.userRepo.findAll(pageable);
+			//List<User> userDetailsList = this.userRepo.findAll();
 			List<UserBean> userList = new ArrayList<>();
 
 			if(!(userDetailsList.isEmpty())) {
@@ -320,9 +345,9 @@ public class UserServiceImpl implements UserService {
 							if(uEmp.getCompanyName() != null)
 								userEmploymentBean.setCompanyName(uEmp.getCompanyName());
 							if(uEmp.getEndDate() != null)
-								userEmploymentBean.setEndDate(uEmp.getEndDate());
+								userEmploymentBean.setEndDate(uEmp.getEndDate().toString());
 							if(uEmp.getStartDate() != null)
-								userEmploymentBean.setStartDate(uEmp.getStartDate());
+								userEmploymentBean.setStartDate(uEmp.getStartDate().toString());
 							if(uEmp.getTechnology() != null)
 								userEmploymentBean.setTechnology(uEmp.getTechnology());
 							userEmploymentList.add(userEmploymentBean);
@@ -414,9 +439,9 @@ public class UserServiceImpl implements UserService {
 							if(uEmp.getCompanyName() != null)
 								userEmploymentBean.setCompanyName(uEmp.getCompanyName());
 							if(uEmp.getEndDate() != null)
-								userEmploymentBean.setEndDate(uEmp.getEndDate());
+								userEmploymentBean.setEndDate(uEmp.getEndDate().toString());
 							if(uEmp.getStartDate() != null)
-								userEmploymentBean.setStartDate(uEmp.getStartDate());
+								userEmploymentBean.setStartDate(uEmp.getStartDate().toString());
 							if(uEmp.getTechnology() != null)
 								userEmploymentBean.setTechnology(uEmp.getTechnology());
 							userEmploymentList.add(userEmploymentBean);
@@ -496,8 +521,16 @@ public class UserServiceImpl implements UserService {
 						for(UserEmployment userEmp : userEmpmt) {
 							userEmp.setCompanyLocation(empBean.getCompanyLocation() != null ? empBean.getCompanyLocation() : userEmp.getCompanyLocation());
 							userEmp.setCompanyName(empBean.getCompanyName() != null ? empBean.getCompanyName() : userEmp.getCompanyName());
-							userEmp.setEndDate(empBean.getEndDate() != null ? empBean.getEndDate() : userEmp.getEndDate());
-							userEmp.setStartDate(empBean.getStartDate() != null ? empBean.getStartDate() : userEmp.getStartDate());
+
+							if(empBean.getEndDate() != null) {
+								Date d = new SimpleDateFormat("yyyy-dd-mm").parse(empBean.getEndDate());
+								userEmp.setEndDate(d);
+							} 
+							if(empBean.getStartDate() != null) {
+								Date d = new SimpleDateFormat("yyyy-dd-mm").parse(empBean.getStartDate());
+								userEmp.setStartDate(d);
+							} 
+							
 							userEmp.setTechnology(empBean.getTechnology() != null ? empBean.getTechnology() : userEmp.getTechnology());
 							empList.add(userEmp);
 						}
@@ -526,7 +559,7 @@ public class UserServiceImpl implements UserService {
 		LOGGER.trace("Exiting editUser() from UserServiceImpl with return:: returnValue: "+returnValue);
 		return returnValue;
 	}
-	
+
 	@Override
 	public String sortBy(String anything) throws Exception {
 		LOGGER.trace("Starting sortBy() from UserServiceImpl");
@@ -534,7 +567,7 @@ public class UserServiceImpl implements UserService {
 		String errorMsg = null;
 		DashboardResponse dashboardResponse = new DashboardResponse();
 		try {
-	        List<User> userDetailsList = this.userRepo.findAll(Sort.by(anything).ascending());
+			List<User> userDetailsList = this.userRepo.findAll(Sort.by(anything).ascending());
 			List<UserBean> userList = new ArrayList<>();
 
 			if(!(userDetailsList.isEmpty())) {
@@ -589,9 +622,9 @@ public class UserServiceImpl implements UserService {
 							if(uEmp.getCompanyName() != null)
 								userEmploymentBean.setCompanyName(uEmp.getCompanyName());
 							if(uEmp.getEndDate() != null)
-								userEmploymentBean.setEndDate(uEmp.getEndDate());
+								userEmploymentBean.setEndDate(uEmp.getEndDate().toString());
 							if(uEmp.getStartDate() != null)
-								userEmploymentBean.setStartDate(uEmp.getStartDate());
+								userEmploymentBean.setStartDate(uEmp.getStartDate().toString());
 							if(uEmp.getTechnology() != null)
 								userEmploymentBean.setTechnology(uEmp.getTechnology());
 							userEmploymentList.add(userEmploymentBean);

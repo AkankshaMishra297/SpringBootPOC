@@ -1,12 +1,16 @@
 package com.neo.spring.demo.bean;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserEducationBean {
+public class UserEducationBean implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	@JsonProperty("sscPercentage")
 	@Pattern(regexp ="[0-9.]*$", message = "invalid sscPercentage")

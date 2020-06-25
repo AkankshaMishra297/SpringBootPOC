@@ -22,6 +22,7 @@ public class UserController extends UserAbstractClass {
 	@Autowired
 	private UserService userService;
 
+	//Add user
 	@RequestMapping(value = "/addUser", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> addUser(@RequestBody String dashboardRequest) throws Exception {
 		LOGGER.trace("Starting addUser() from UserController with arguments:: dashboardRequest: "+dashboardRequest);
@@ -39,6 +40,7 @@ public class UserController extends UserAbstractClass {
 		return responseEntity;
 	}
 	
+	//Edit User with given id
 	@RequestMapping(value = "/editUser/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> editUser(@RequestBody String dashboardRequest, @PathVariable("id") int id) throws Exception {
 		LOGGER.trace("Starting editUser() from UserController");
@@ -56,6 +58,7 @@ public class UserController extends UserAbstractClass {
 		return responseEntity;
 	}
 
+	//Get active users
 	@RequestMapping(value = "/getUsers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getUsers() throws Exception {
 		LOGGER.trace("Starting getUsers() from UserController");
@@ -69,11 +72,12 @@ public class UserController extends UserAbstractClass {
 		return responseEntity;
 	}
 	
+	//Get all users based on pagination 
 	@RequestMapping(value = "/getAllUsers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> getAllUsers() throws Exception {
+	public ResponseEntity<?> getAllUsers(@RequestBody String DashBoardRequest) throws Exception {
 		LOGGER.trace("Starting getAllUsers() from UserController");
 		ResponseEntity<?> responseEntity = null;
-		String jsonString = userService.getAllUsers();
+		String jsonString = userService.getAllUsers(DashBoardRequest);
 		if(jsonString != null){
 			responseEntity = ResponseEntity.ok(jsonString);
 		} else
@@ -82,6 +86,7 @@ public class UserController extends UserAbstractClass {
 		return responseEntity;
 	}
 
+	//soft delete
 	@RequestMapping(value = "/softDelete/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> softDeleteUser(@PathVariable("id")int id) throws Exception {
 		LOGGER.trace("Starting hardDeleteUser() from UserController");
@@ -95,6 +100,7 @@ public class UserController extends UserAbstractClass {
 		return responseEntity;
 	}
 
+	//hard delete
 	@RequestMapping(value = "/hardDelete/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> hardDeleteUser(@PathVariable("id")int id) throws Exception {
 		LOGGER.trace("Starting hardDeleteUser() from UserController");
@@ -108,6 +114,7 @@ public class UserController extends UserAbstractClass {
 		return responseEntity;
 	}
 
+	//search user by email
 	@RequestMapping(value = "/searchByEmail/{email}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> searchByEmail(@PathVariable("email") String email) throws Exception {
 		LOGGER.trace("Starting searchByEmail() from UserController");
@@ -121,6 +128,7 @@ public class UserController extends UserAbstractClass {
 		return responseEntity;
 	}
 	
+	//sort user based on any field
 	@RequestMapping(value = "/sortBy/{anything}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> sortByAnything(@PathVariable("anything") String anything) throws Exception {
 		LOGGER.trace("Starting sortByAnything() from UserController");

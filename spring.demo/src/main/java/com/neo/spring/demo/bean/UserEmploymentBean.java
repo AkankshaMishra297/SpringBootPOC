@@ -1,21 +1,30 @@
 package com.neo.spring.demo.bean;
 
-import java.util.Date;
+import java.io.Serializable;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.OptBoolean;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserEmploymentBean {
+public class UserEmploymentBean implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	@JsonProperty("companyName")
 	private String companyName;
 
 	@JsonProperty("startDate")
-	private Date startDate;
+    @JsonFormat(pattern = "yyyy-MM-dd", lenient = OptBoolean.FALSE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private String startDate;
+	
 	
 	@JsonProperty("endDate")
-	private Date endDate;
+	private String endDate;
 
 	@JsonProperty("technology")
 	private String technology;
@@ -31,19 +40,19 @@ public class UserEmploymentBean {
 		this.companyName = companyName;
 	}
 
-	public Date getStartDate() {
+	public String getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getEndDate() {
+	public String getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
 

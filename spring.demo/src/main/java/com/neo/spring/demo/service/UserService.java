@@ -6,13 +6,13 @@ public interface UserService {
 
 	public String getAllActiveUsers() throws Exception;
 
-	public String editUser(String user, int id) throws Exception;
+	public String editUser(String dashBoardRequest, int id) throws Exception;
 
 	public String deleteUser(int id) throws Exception;
 
 	public String softDelete(int id) throws Exception;
 
-	public String getAllUsers() throws Exception;
+	public String getAllUsers(String dashBoardRequest) throws Exception;
 
 	public String searchByEmail(String email) throws Exception;
 

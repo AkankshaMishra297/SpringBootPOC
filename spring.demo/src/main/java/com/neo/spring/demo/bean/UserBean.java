@@ -1,5 +1,6 @@
 package com.neo.spring.demo.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -10,8 +11,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserBean {
+public class UserBean implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	@JsonProperty("userName")
 	@NotNull
 	@Pattern(regexp ="([A-Za-z0-9]){4,12}", message = "invalid username")
@@ -31,6 +34,7 @@ public class UserBean {
 	private UserEducationBean userEducationBean;
 	
 	@JsonProperty("userEmployment")
+	@Valid
 	private  List<UserEmploymentBean> userEmploymentBean;
 
 	
