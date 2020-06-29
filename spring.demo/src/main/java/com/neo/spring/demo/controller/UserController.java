@@ -6,7 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,7 +27,7 @@ public class UserController extends UserValidation {
 	private UserService userService;
 
 	//Add user
-	@RequestMapping(value = "/addUser", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/addUser", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> addUser(@RequestBody String dashboardRequest) throws Exception {
 		LOGGER.trace("Starting addUser() from UserController with arguments:: dashboardRequest: "+dashboardRequest);
 		ResponseEntity<?> responseEntity = null;
@@ -41,7 +45,7 @@ public class UserController extends UserValidation {
 	}
 	
 	//Edit User with given id
-	@RequestMapping(value = "/editUser/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/editUser/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> editUser(@RequestBody String dashboardRequest, @PathVariable("id") int id) throws Exception {
 		LOGGER.trace("Starting editUser() from UserController");
 		ResponseEntity<?> responseEntity = null;
@@ -59,7 +63,7 @@ public class UserController extends UserValidation {
 	}
 
 	//Get active users
-	@RequestMapping(value = "/getUsers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/getUsers", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getUsers() throws Exception {
 		LOGGER.trace("Starting getUsers() from UserController");
 		ResponseEntity<?> responseEntity = null;
@@ -73,7 +77,7 @@ public class UserController extends UserValidation {
 	}
 	
 	//Get all users based on pagination 
-	@RequestMapping(value = "/getAllUsers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/getAllUsers", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getAllUsers(@RequestBody String DashBoardRequest) throws Exception {
 		LOGGER.trace("Starting getAllUsers() from UserController");
 		ResponseEntity<?> responseEntity = null;
@@ -87,7 +91,7 @@ public class UserController extends UserValidation {
 	}
 
 	//soft delete
-	@RequestMapping(value = "/softDelete/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/softDelete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> softDeleteUser(@PathVariable("id")int id) throws Exception {
 		LOGGER.trace("Starting hardDeleteUser() from UserController");
 		ResponseEntity<?> responseEntity = null;
@@ -101,7 +105,7 @@ public class UserController extends UserValidation {
 	}
 
 	//hard delete
-	@RequestMapping(value = "/hardDelete/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping(value = "/hardDelete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> hardDeleteUser(@PathVariable("id")int id) throws Exception {
 		LOGGER.trace("Starting hardDeleteUser() from UserController");
 		ResponseEntity<?> responseEntity = null;
@@ -115,7 +119,7 @@ public class UserController extends UserValidation {
 	}
 
 	//search user by email
-	@RequestMapping(value = "/searchByEmail/{email}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/searchByEmail/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> searchByEmail(@PathVariable("email") String email) throws Exception {
 		LOGGER.trace("Starting searchByEmail() from UserController");
 		ResponseEntity<?> responseEntity = null;
