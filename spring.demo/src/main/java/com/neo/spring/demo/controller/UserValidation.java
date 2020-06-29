@@ -13,12 +13,11 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.neo.spring.demo.bean.DashboardResponse;
 import com.neo.spring.demo.bean.UserBean;
-import com.neo.spring.demo.serviceImpl.UserServiceImpl;
 
-public class UserAbstractClass {
+public class UserValidation {
 	
 	private static final ObjectMapper MAPPER = new ObjectMapper();
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserValidation.class);
 
 	
 	public String validate(String request) throws Exception {

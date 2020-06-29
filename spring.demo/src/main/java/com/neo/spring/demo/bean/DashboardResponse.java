@@ -16,38 +16,11 @@ public class DashboardResponse implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    
     @JsonProperty("status_code")
     private String statusCode;
 
-   
     @JsonProperty("error_code")
     private String errorCode;
-
-    
-    public String getStatusCode() {
-		return statusCode;
-	}
-
-	public void setStatusCode(String statusCode) {
-		this.statusCode = statusCode;
-	}
-
-	public String getErrorCode() {
-		return errorCode;
-	}
-
-	public void setErrorCode(String errorCode) {
-		this.errorCode = errorCode;
-	}
-
-	public String getErrorMsg() {
-		return errorMsg;
-	}
-
-	public void setErrorMsg(String errorMsg) {
-		this.errorMsg = errorMsg;
-	}
 
 	@JsonProperty("error_msg")
     private String errorMsg;
@@ -80,4 +53,29 @@ public class DashboardResponse implements Serializable {
             this.value.put(name, value);
         }
     }
+    
+    
+    public String getStatusCode() {
+		return statusCode;
+	}
+
+	public void setStatusCode(String statusCode) {
+		this.statusCode = statusCode;
+	}
+
+	public String getErrorCode() {
+		return errorCode;
+	}
+
+	public void setErrorCode(String errorCode) {
+		this.errorCode = errorCode;
+	}
+
+	public String getErrorMsg() {
+		return errorMsg;
+	}
+
+	public void setErrorMsg(String errorMsg) {
+		this.errorMsg = errorMsg;
+	}
 }

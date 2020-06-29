@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.neo.spring.demo.service.UserService;
 
 @RestController
-public class UserController extends UserAbstractClass {
+public class UserController extends UserValidation {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
